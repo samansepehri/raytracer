@@ -1,3 +1,12 @@
 [submodule "ext/cyCodeBase"]
 	path = ext/cyCodeBase
 	url = https://github.com/cemyuksel/cyCodeBase.git
+	ignore = dirty
+[submodule "ext/tinyxml2"]
+	path = ext/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
+	ignore = dirty
+[submodule "ext/lodepng"]
+	path = ext/lodepng
+	url = https://github.com/lvandeve/lodepng.git
+	ignore = dirty
