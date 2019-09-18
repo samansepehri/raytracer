@@ -1,3 +1,9 @@
 [submodule "ext/cyCodeBase"]
 	path = ext/cyCodeBase
 	url = https://github.com/cemyuksel/cyCodeBase.git
+[submodule "ext/lodepng"]
+	path = ext/lodepng
+	url = https://github.com/lvandeve/lodepng.git
+[submodule "ext/tinyxml2"]
+	path = ext/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
