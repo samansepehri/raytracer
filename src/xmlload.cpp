@@ -11,7 +11,7 @@
 
 #include "scene.h"
 #include "objects.h"
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml/tinyxml.h"
 
 //-------------------------------------------------------------------------------
 

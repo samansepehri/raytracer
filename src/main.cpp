@@ -1,7 +1,8 @@
 #include <iostream>
 #include <GLUT/GLUT.h>
 #include <OpenGL/OpenGL.h>
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml/tinyxml.h"
+#include "scene.h"
 
 using namespace std;
 
