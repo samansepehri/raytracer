@@ -1,6 +1,7 @@
 #include <iostream>
 #include <GLUT/GLUT.h>
 #include <OpenGL/OpenGL.h>
+#include "tinyxml2/tinyxml2.h"
 
 using namespace std;
 

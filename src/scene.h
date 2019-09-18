@@ -21,11 +21,11 @@
 #include <vector>
 #include <atomic>
 
-#include "lodepng.h"
+#include "lodepng/lodepng.h"
 
-#include "cyVector.h"
-#include "cyMatrix.h"
-#include "cyColor.h"
+#include "cyCodeBase/cyVector.h"
+#include "cyCodeBase/cyMatrix.h"
+#include "cyCodeBase/cyColor.h"
 using namespace cy;
 
 //-------------------------------------------------------------------------------

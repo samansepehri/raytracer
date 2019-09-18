@@ -1,3 +1,6 @@
+# Build follder
+build/*
+
 # Mac
 *.DS_Store
 
