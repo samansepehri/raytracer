@@ -17,9 +17,13 @@ set(CYCODE  ext/cyCodeBase/cyVector.h
             ext/cyCodeBase/cyColor.h )
 set(LODEPNG ext/lodepng/lodepng.cpp ext/lodepng/lodepng.h )
 
+set(OTHERS src/objects.cpp src/objects.h
+          src/viewport.cpp
+          src/xmlload.cpp
+          src/scene.h)
+
 add_executable(raytracer src/main.cpp
-                ${TINYXML} ${CYCODE} ${LODEPNG}
-                src/objects.cpp )
+                ${TINYXML} ${CYCODE} ${LODEPNG} ${OTHERS})
 
 add_compile_definitions(USE_GLUT)
 
