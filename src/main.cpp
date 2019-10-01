@@ -4,8 +4,7 @@
 
 #include "scene.h"
 #include "objects.h"
-#include "viewport.cpp"
-#include "xmlload.cpp"
+#include "utility.cpp"
 
 using namespace std;
 
@@ -25,7 +24,8 @@ void StopRender()
 }
 
 int main()
-{   
+{
+    LoadScene("../../myscene.xml");
     ShowViewport();
     cout << "Hello World! \n";
     return 0;

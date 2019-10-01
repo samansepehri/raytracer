@@ -6,7 +6,7 @@ project(raytracer)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ext )
+include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ext)
 
 set(TINYXML ext/tinyxml/tinyxml.cpp ext/tinyxml/tinyxml.h
             ext/tinyxml/tinyxmlerror.cpp
@@ -17,14 +17,18 @@ set(CYCODE  ext/cyCodeBase/cyVector.h
             ext/cyCodeBase/cyColor.h )
 set(LODEPNG ext/lodepng/lodepng.cpp ext/lodepng/lodepng.h )
 
-set(OTHERS src/objects.cpp src/objects.h
-          src/viewport.cpp
-          src/xmlload.cpp
-          src/scene.h)
+
+add_library(utility STATIC
+                src/utility.cpp src/utility.h
+                src/objects.cpp src/objects.h
+                src/scene.h
+                src/viewport.cpp
+                src/xmlload.cpp
+                ${TINYXML})
 
 add_executable(raytracer src/main.cpp
-                ${TINYXML} ${CYCODE} ${LODEPNG} ${OTHERS})
+                 ${CYCODE} ${LODEPNG})
 
 add_compile_definitions(USE_GLUT)
 
-target_link_libraries(raytracer ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(raytracer ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} utility )
