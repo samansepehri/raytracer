@@ -308,7 +308,7 @@ void GlutIdle()
 
 void GlutKeyboard(unsigned char key, int x, int y)
 {
-	switch ( key ) {
+    switch ( key ) {
 	case 27:	// ESC
 		exit(0);
 		break;
@@ -317,6 +317,7 @@ void GlutKeyboard(unsigned char key, int x, int y)
 		case MODE_READY: 
 			mode = MODE_RENDERING;
 			viewMode = VIEWMODE_IMAGE;
+            printf("Activate MODE_RENDERING VIEWMODE_IMAGE\n");
 			DrawScene();
 			glReadPixels( 0, 0, renderImage.GetWidth(), renderImage.GetHeight(), GL_RGB, GL_UNSIGNED_BYTE, renderImage.GetPixels() );
 			{
@@ -334,12 +335,14 @@ void GlutKeyboard(unsigned char key, int x, int y)
 			break;
 		case MODE_RENDERING:
 			mode = MODE_READY;
+            printf("Activate MODE_READY\n");
 			StopRender();
 			glutPostRedisplay();
 			break;
 		case MODE_RENDER_DONE: 
 			mode = MODE_READY;
 			viewMode = VIEWMODE_OPENGL;
+            printf("Activate MODE_READY VIEWMODE_OPENGL\n");
 			glutPostRedisplay();
 			break;
 		}
@@ -347,14 +350,17 @@ void GlutKeyboard(unsigned char key, int x, int y)
 	case '1':
 		viewAngle1 = viewAngle2 = 0;
 		viewMode = VIEWMODE_OPENGL;
+        printf("Activate VIEWMODE_OPENGL\n");
 		glutPostRedisplay();
 		break;
 	case '2':
 		viewMode = VIEWMODE_IMAGE;
+        printf("Activate VIEWMODE_IMAGE\n");
 		glutPostRedisplay();
 		break;
 	case '3':
 		viewMode = VIEWMODE_Z;
+        printf("Activate VIEWMODE_Z\n");
 		glutPostRedisplay();
 		break;
 	}

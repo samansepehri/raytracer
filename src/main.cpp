@@ -15,7 +15,13 @@ Sphere theSphere;
 
 void BeginRender()
 {
-
+    int size = renderImage.GetWidth()*renderImage.GetHeight();
+    // generate a ray for each pixel
+    // hit testing
+    // shading
+    // write to pixel (img using renderImage.GetPixels() )
+    Color24* img = renderImage.GetPixels();
+    
 }
 
 void StopRender()
