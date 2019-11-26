@@ -13,17 +13,43 @@ Camera camera;
 RenderImage renderImage;
 Sphere theSphere;
 
-void RenderPixel()
+class PixelIterator{
+private:
+    atomic<int> ix;
+public:
+    void Init(){ ix = 0;}
+    bool GetPixel(int &x, int &y){
+        int i=ix++;
+        if(i>=camera.imgWidth*camera.imgHeight) return false;
+        x = i%camera.imgWidth;
+        y = i/camera.imgWidth;
+        return true;
+    }
+};
+//multi-thread
+PixelIterator pIt;
+
+void RenderPixel(PixelIterator &pi, int threadInd)
 {
-    
+    int x,y;
+  while(pi.GetPixel(x,y)){
+      int index = y*camera.imgWidth+x;
+      
+      Color24* img = renderImage.GetPixels();
+      Color c(1, 0,0);
+      vector<Color> colorPallet = {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(0, 1, 1),
+                                   Color(1,0,1), Color(1,1,0), Color(.5,0,0.5), Color(1, .5, 0)};
+      img[index] = static_cast<Color24> (colorPallet[threadInd]);
+  }
 }
 void BeginRender()
 {
     auto noThread = thread::hardware_concurrency();
+    cout << "Number of threads: " << noThread << endl;
     vector<thread> threads;
     for(size_t i = 0; i < noThread; ++i)
     {
-        threads.emplace_back(RenderPixel);
+        threads.emplace_back(RenderPixel, ref(pIt), i);
     }
     
     for(auto &t:threads)
@@ -35,8 +61,13 @@ void BeginRender()
     // hit testing
     // shading
     // write to pixel (img using renderImage.GetPixels() )
-    Color24* img = renderImage.GetPixels();
+    //Color24* img = renderImage.GetPixels();
     
+    Color c(1, 0,0);
+    //img[30000] = static_cast<Color24>(c);
+    //img[30001] = static_cast<Color24>(c);
+    //img[30002] = static_cast<Color24>(c);
+    //img[30003] = static_cast<Color24>(c);
     // result in the build folder
     renderImage.SaveImage("../render.png");
 }
