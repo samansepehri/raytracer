@@ -11,4 +11,4 @@ You can also clone the repo with --recursive to get submodules.
 
 ## Current Progress
 A visualization of multithread pixel rendering (8-core concurrency):
-<img src="./img/multithreadVis.png" width=400% height=400%>
+<img src="./img/multithreadVis.png" width=100% height=100%>
