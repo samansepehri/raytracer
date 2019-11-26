@@ -22,6 +22,8 @@ void BeginRender()
     // write to pixel (img using renderImage.GetPixels() )
     Color24* img = renderImage.GetPixels();
     
+    // result in the build folder
+    renderImage.SaveImage("../render.png");
 }
 
 void StopRender()
