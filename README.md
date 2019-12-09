@@ -13,7 +13,7 @@ You can also clone the repo with --recursive to get submodules.
 
 
 <figure>
-  <img src="./img/SphereRayBasic.png" width=50% height=50%>
+  <img src="./img/SphereRayBasic.png" width=30% height=30%>
   <figcaption>Basic scene with spheres and ray intersection test</figcaption>
 </figure>
 
