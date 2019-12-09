@@ -24,7 +24,29 @@ bool TraceRay(const Ray& ray, HitInfo& hitInfo)
 }
 bool TraceNode(const Node& node, const Ray& ray, HitInfo& hitInfo)
 {
-    return true;
+    bool isHit = false;
+
+    Ray nodeRay = node.ToNodeCoords(ray);
+    //const Object* obj =  node.GetNodeObj();
+
+    if(const Object* obj = node.GetNodeObj())
+    {
+        if(obj->IntersectRay(nodeRay, hitInfo))
+        {
+            hitInfo.node = &node;
+            isHit = true;
+        }
+    }
+
+    for (int i = 0; i < node.GetNumChild(); ++i) {
+        const Node* childNode = node.GetChild(i);
+        if( TraceNode(*childNode, nodeRay, hitInfo))
+        {
+            isHit = true;
+        }
+    }
+
+    return isHit;
 }
 void RenderPixel(int pixelIndex, float zBuffer, Color color)
 {
@@ -34,7 +56,7 @@ void RenderPixel(int pixelIndex, float zBuffer, Color color)
 void RenderScene(PixelIterator &pi, int threadInd)
 {
     float l = 1; // distance from camera to image plane
-    float aspectRatio = camera.imgWidth / camera.imgHeight;
+    float aspectRatio = (float)camera.imgWidth / camera.imgHeight;
     float h = l * tan((Utility::toRadian(camera.fov/2.))) * 2; // height of the image plane
     float w = aspectRatio * h; // width of the image plane
     
@@ -45,7 +67,7 @@ void RenderScene(PixelIterator &pi, int threadInd)
     camera.up.Normalize();
     
     
-    Matrix3f worldToCamera( camera.up.Cross(-camera.dir).GetNormalized() , camera.up ,camera.dir);
+    Matrix3f worldToCamera( camera.up.Cross(-camera.dir).GetNormalized() , camera.up ,-camera.dir);
     
     int x,y;
 
@@ -57,6 +79,7 @@ void RenderScene(PixelIterator &pi, int threadInd)
                                    Color(1,0,1), Color(1,1,0), Color(.5,0,0.5), Color(1, .5, 0)};
         img[index] = static_cast<Color24> (colorPallet[threadInd]);
         */
+        
         Vec3f pixelTarget( (x+.5)* w / camera.imgWidth, -(y+.5)* h / camera.imgHeight , 0);
         pixelTarget += topLeftPixel;
         Ray cameraRay(camera.pos, pixelTarget - camera.pos);
