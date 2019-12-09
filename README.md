@@ -12,11 +12,9 @@ You can also clone the repo with --recursive to get submodules.
 ## Current Progress
 
 
-<figure>
-  <img src="./img/SphereRayBasic.png" width=30% height=30%>
-  <figcaption>Basic scene with spheres and ray intersection test</figcaption>
-</figure>
 
+Basic scene with spheres and ray intersection test
+<img src="./img/SphereRayBasic.png" width=40% height=40%>
 
 A visualization of multithread pixel rendering (8-core concurrency):
 <img src="./img/multithreadVis.png" width=50% height=50%>
