@@ -18,9 +18,21 @@ PixelIterator pIt;
 bool TraceRay(const Ray& ray, HitInfo& hitInfo);
 bool TraceNode(const Node& node, const Ray& ray, HitInfo& hitInfo);
 
-void RenderPixel(PixelIterator &pi, int threadInd)
+bool TraceRay(const Ray& ray, HitInfo& hitInfo)
 {
-    
+    return TraceNode(rootNode, ray, hitInfo);
+}
+bool TraceNode(const Node& node, const Ray& ray, HitInfo& hitInfo)
+{
+    return true;
+}
+void RenderPixel(int pixelIndex, float zBuffer, Color color)
+{
+    Color24* img = renderImage.GetPixels();
+    img[pixelIndex] = static_cast<Color24>(color);
+}
+void RenderScene(PixelIterator &pi, int threadInd)
+{
     float l = 1; // distance from camera to image plane
     float aspectRatio = camera.imgWidth / camera.imgHeight;
     float h = l * tan((Utility::toRadian(camera.fov/2.))) * 2; // height of the image plane
@@ -36,17 +48,15 @@ void RenderPixel(PixelIterator &pi, int threadInd)
     Matrix3f worldToCamera( camera.up.Cross(-camera.dir).GetNormalized() , camera.up ,camera.dir);
     
     int x,y;
-    Color24* img = renderImage.GetPixels();
 
     while(pi.GetPixel(x,y)){
         
-        int index = y*camera.imgWidth+x;
-
+        /* Multi-thread visualization
         Color c(1, 0,0);
         vector<Color> colorPallet = {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(0, 1, 1),
                                    Color(1,0,1), Color(1,1,0), Color(.5,0,0.5), Color(1, .5, 0)};
         img[index] = static_cast<Color24> (colorPallet[threadInd]);
-
+        */
         Vec3f pixelTarget( (x+.5)* w / camera.imgWidth, -(y+.5)* h / camera.imgHeight , 0);
         pixelTarget += topLeftPixel;
         Ray cameraRay(camera.pos, pixelTarget - camera.pos);
@@ -61,23 +71,27 @@ void RenderPixel(PixelIterator &pi, int threadInd)
             if(TraceRay(cameraRay,hitInfo)){
                 //set color
                 //setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_pixel, hitinfo, lights));
+                RenderPixel(index, BIGFLOAT, Color24::White().ToColor());
+                //img[index] = Color24::White();
+                
             }
             else{
                 //setPixelColor(index,BIGFLOAT,black);
+                RenderPixel(index, BIGFLOAT, Color24::Black().ToColor());
+                //img[index] = Color24::Black();
             }
             renderImage.IncrementNumRenderPixel(1);
         }
-        //renderImage.IncrementNumRenderPixel(1);
     }
 }
 void BeginRender()
 {
-    auto noThread = thread::hardware_concurrency();
-    cout << "Number of threads: " << noThread << endl;
+    auto numThread = thread::hardware_concurrency();
+    cout << "Number of threads: " << numThread << endl;
     vector<thread> threads;
-    for(size_t i = 0; i < noThread; ++i)
+    for(size_t i = 0; i < numThread; ++i)
     {
-        threads.emplace_back(RenderPixel, ref(pIt), i);
+        threads.emplace_back(RenderScene, ref(pIt), i);
     }
     
     for(auto &t:threads)
