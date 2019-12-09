@@ -61,6 +61,7 @@ void RenderPixel(PixelIterator &pi, int threadInd)
         Vec3f pixelTarget( (x+.5)* w / camera.imgWidth, -(y+.5)* h / camera.imgHeight , 0);
         pixelTarget += topLeftPixel;
         Ray cameraRay(camera.pos, pixelTarget - camera.pos);
+        cameraRay.dir = worldToCamera * cameraRay;
         cameraRay.dir.Normalize();
 
 
