@@ -40,6 +40,21 @@ void RenderPixel(PixelIterator &pi, int threadInd)
       vector<Color> colorPallet = {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(0, 1, 1),
                                    Color(1,0,1), Color(1,1,0), Color(.5,0,0.5), Color(1, .5, 0)};
       img[index] = static_cast<Color24> (colorPallet[threadInd]);
+      
+      float l = 1; // distance from camera to image plane
+      float aspectRatio = camera.imgWidth / camera.imgHeight;
+      float h = l * tan((Utility::toRadian(camera.fov/2.))) * 2; // height of the image plane
+      float w = aspectRatio * h; // width of the image plane
+      
+      Vec3f topLeftPixel(-w/2., h/2., -l);
+      topLeftPixel += camera.pos;
+      
+      Vec3f pixelTarget( (x+.5)* w / camera.imgWidth, -(y+.5)* h / camera.imgHeight , 0);
+      pixelTarget += topLeftPixel;
+      Ray cameraRay(camera.pos, pixelTarget - camera.pos);
+      
+      
+      //renderImage.IncrementNumRenderPixel(1);
   }
 }
 void BeginRender()
