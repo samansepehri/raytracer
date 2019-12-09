@@ -12,22 +12,11 @@ Node rootNode;
 Camera camera;
 RenderImage renderImage;
 Sphere theSphere;
-
-class PixelIterator{
-private:
-    atomic<int> ix;
-public:
-    void Init(){ ix = 0;}
-    bool GetPixel(int &x, int &y){
-        int i=ix++;
-        if(i>=camera.imgWidth*camera.imgHeight) return false;
-        x = i%camera.imgWidth;
-        y = i/camera.imgWidth;
-        return true;
-    }
-};
 //multi-thread
 PixelIterator pIt;
+
+bool TraceRay(const Ray& ray, HitInfo& hitInfo);
+bool TraceNode(const Node& node, const Ray& ray, HitInfo& hitInfo);
 
 void RenderPixel(PixelIterator &pi, int threadInd)
 {
@@ -64,7 +53,20 @@ void RenderPixel(PixelIterator &pi, int threadInd)
         cameraRay.dir = worldToCamera * cameraRay.dir;
         cameraRay.dir.Normalize();
 
-
+        HitInfo hitInfo;
+        
+        if(rootNode.GetNumChild()>0){
+            
+            int index = y*camera.imgWidth+x;
+            if(TraceRay(cameraRay,hitInfo)){
+                //set color
+                //setPixelColor(index,hitinfo.z,hitinfo.node->GetMaterial()->Shade(ray_pixel, hitinfo, lights));
+            }
+            else{
+                //setPixelColor(index,BIGFLOAT,black);
+            }
+            renderImage.IncrementNumRenderPixel(1);
+        }
         //renderImage.IncrementNumRenderPixel(1);
     }
 }
